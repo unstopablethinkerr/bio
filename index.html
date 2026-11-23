@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bala Santhosh · Operations, Automation &amp; Creative Code</title>
+<meta name="description" content="Bala Santhosh (UnstopableThinkerr) — operations and reporting professional from Coimbatore who automates workflows with Google Apps Script and Python, and builds creative web experiments.">
+<meta name="theme-color" content="#efe7da">
+<meta property="og:title" content="Bala Santhosh · UnstopableThinkerr">
+<meta property="og:description" content="Operations, automation and creative code. Coimbatore, India.">
+<meta property="og:image" content="assets/bala.webp">
+<link rel="icon" href="assets/bala.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#efe7da; --bg2:#e6dccb; --ink:#1b1a1f; --mut:#6b665d;
+  --card:#f8f3ea; --line:rgba(27,26,31,.12);
+  --a:#3b4cc0; --b:#f2b134; --c:#d96a4a; --d:#4aa3a2;
+  --r:26px; --tab:72px;
+  --sans:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased;padding-bottom:calc(var(--tab) + env(safe-area-inset-bottom))}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:var(--b)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+section{padding:88px 0;position:relative}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mut);display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--a);border-radius:2px}
+h2{font-size:clamp(34px,6vw,60px);line-height:1.02;letter-spacing:-.03em;font-weight:800;max-width:16ch}
+h2 em{font-style:normal;color:var(--a)}
+
+/* progress + topbar */
+#progress{position:fixed;top:0;left:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--a),var(--c),var(--b));z-index:100}
+.top{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:14px 22px;backdrop-filter:blur(14px);background:rgba(239,231,218,.72);border-bottom:1px solid transparent;transition:border-color .3s}
+.top.scrolled{border-color:var(--line)}
+.brand{font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.brand i{width:30px;height:30px;border-radius:10px;background:var(--ink);color:var(--bg);display:grid;place-items:center;font:800 14px var(--sans);font-style:normal}
+.dnav{display:none;gap:6px}
+.dnav a{padding:8px 14px;border-radius:99px;font-size:14px;font-weight:600;color:var(--mut);transition:.25s}
+.dnav a:hover,.dnav a.on{background:var(--ink);color:var(--bg)}
+
+/* hero */
+.hero{min-height:100svh;padding:110px 0 40px;display:flex;align-items:center;overflow:hidden}
+.hero .wrap{display:grid;gap:30px;align-items:center;width:100%}
+.hello{display:inline-flex;gap:10px;align-items:center;font:500 13px var(--mono);background:var(--card);border:1px solid var(--line);padding:8px 14px;border-radius:99px;margin-bottom:22px}
+.dot{width:8px;height:8px;border-radius:50%;background:#2fb560;box-shadow:0 0 0 0 rgba(47,181,96,.6);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(47,181,96,0)}100%{box-shadow:0 0 0 0 rgba(47,181,96,0)}}
+.hero h1{font-size:clamp(52px,12vw,128px);line-height:.88;letter-spacing:-.05em;font-weight:800}
+.hero h1 span{display:block;overflow:hidden}
+.hero h1 span b{display:inline-block;font-weight:800;transform:translateY(110%);animation:up .9s cubic-bezier(.2,.8,.2,1) forwards}
+.hero h1 span:nth-child(2) b{animation-delay:.12s;color:var(--a)}
+@keyframes up{to{transform:none}}
+.role{margin:22px 0 28px;font-size:clamp(17px,2.4vw,22px);color:var(--mut);max-width:34ch;min-height:2.9em}
+.role strong{color:var(--ink);border-bottom:3px solid var(--b)}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:14px 22px;border-radius:99px;font-weight:700;font-size:15px;border:1.5px solid var(--ink);transition:transform .25s,background .25s,color .25s;cursor:pointer;background:transparent;font-family:inherit;color:var(--ink)}
+.btn.fill{background:var(--ink);color:var(--bg)}
+.btn:hover{transform:translateY(-3px)}
+.btn.fill:hover{background:var(--a);border-color:var(--a)}
+.btn svg{width:18px;height:18px;fill:currentColor}
+.stage{position:relative;justify-self:center;width:min(78vw,380px);aspect-ratio:3/4}
+.arch{position:absolute;inset:6% 4% 0;border-radius:999px 999px 36px 36px;background:linear-gradient(160deg,var(--b),var(--c) 60%,var(--a));transform:translateY(calc(var(--sy,0) * -20px))}
+.ring{position:absolute;inset:-4%;border-radius:50%;border:2px dashed rgba(27,26,31,.28);animation:spin 40s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.stage img.me{height:auto;-webkit-mask-image:linear-gradient(#000 82%,transparent);mask-image:linear-gradient(#000 82%,transparent);position:absolute;left:50%;bottom:0;width:104%;transform:translateX(-50%) translateY(calc(var(--sy,0) * 28px));filter:drop-shadow(0 22px 24px rgba(27,26,31,.28));z-index:2}
+.chip{position:absolute;z-index:3;background:var(--card);border:1px solid var(--line);padding:9px 14px;border-radius:14px;font:500 12px var(--mono);box-shadow:0 10px 30px rgba(27,26,31,.12);animation:bob 5s ease-in-out infinite}
+.chip.c1{top:8%;left:-8%}.chip.c2{top:38%;right:-10%;animation-delay:-1.5s}.chip.c3{bottom:12%;left:-10%;animation-delay:-3s}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.scrollcue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);font:500 11px var(--mono);letter-spacing:.2em;color:var(--mut);display:none}
+
+/* marquee */
+.marq{background:var(--ink);color:var(--bg);padding:20px 0;overflow:hidden;transform:rotate(-1.4deg);margin:10px -20px}
+.marq div{display:flex;gap:40px;white-space:nowrap;font-weight:800;font-size:clamp(22px,4vw,34px);letter-spacing:-.02em;will-change:transform;transform:translateX(calc(var(--sp,0) * -1px))}
+.marq span::after{content:"✦";color:var(--b);margin-left:40px}
+
+/* about */
+.about-grid{display:grid;gap:34px}
+.about p{font-size:clamp(18px,2.2vw,23px);line-height:1.5;max-width:38ch}
+.about p+p{margin-top:16px;color:var(--mut);font-size:17px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.stat b{display:block;font-size:clamp(40px,7vw,64px);line-height:1;letter-spacing:-.04em;font-weight:800}
+.stat:nth-child(1) b{color:var(--a)}.stat:nth-child(2) b{color:var(--c)}.stat:nth-child(3) b{color:var(--d)}.stat:nth-child(4) b{color:#c28a10}
+.stat small{display:block;margin-top:8px;color:var(--mut);font-size:14px}
+
+/* skills */
+.skills{display:grid;gap:14px;margin-top:40px}
+.skill{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px;position:relative;overflow:hidden;transition:transform .3s}
+.skill:hover{transform:translateY(-6px) rotate(-.4deg)}
+.skill::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:var(--k);opacity:.18;transition:transform .5s}
+.skill:hover::after{transform:scale(2.2)}
+.skill h3{font-size:20px;letter-spacing:-.02em;margin-bottom:14px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tags li{list-style:none;font:500 12.5px var(--mono);padding:6px 11px;border-radius:99px;background:var(--bg);border:1px solid var(--line)}
+
+/* timeline */
+.tl{position:relative;margin-top:44px;padding-left:34px}
+.tl::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl .fill{position:absolute;left:9px;top:6px;width:2px;height:0;background:linear-gradient(var(--a),var(--c));border-radius:2px}
+.job{position:relative;margin-bottom:34px}
+.job::before{content:"";position:absolute;left:-34px;top:6px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:3px solid var(--line);transition:.4s}
+.job.in::before{border-color:var(--a);background:var(--b);transform:scale(1.1)}
+.when{font:500 12px var(--mono);color:var(--mut);letter-spacing:.08em}
+.job h3{font-size:clamp(22px,3.4vw,30px);letter-spacing:-.025em;line-height:1.15;margin:6px 0 2px}
+.job .org{color:var(--a);font-weight:600;margin-bottom:14px}
+.job ul{display:grid;gap:9px;padding-left:18px;max-width:70ch;color:#38352f}
+.job li::marker{color:var(--c)}
+
+/* projects */
+.proj{display:grid;gap:16px;margin-top:40px}
+.pcard{background:var(--ink);color:var(--bg);border-radius:30px;padding:30px;position:relative;overflow:hidden}
+.pcard.light{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.pcard .num{font:500 12px var(--mono);letter-spacing:.14em;opacity:.65}
+.pcard h3{font-size:clamp(26px,4vw,40px);letter-spacing:-.03em;line-height:1.05;margin:12px 0 12px}
+.pcard p{opacity:.82;max-width:48ch;margin-bottom:18px}
+.pcard .tags li{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.18)}
+.pcard.light .tags li{background:var(--bg);border-color:var(--line)}
+.pcard .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.pcard .btn{color:inherit;border-color:currentColor;padding:11px 18px;font-size:14px}
+.pcard .btn.fill{background:var(--b);color:var(--ink);border-color:var(--b)}
+.qr{position:absolute;right:-20px;bottom:-20px;width:140px;height:140px;opacity:.14;background:
+  conic-gradient(from 90deg at 40% 40%,#fff 25%,transparent 0 50%,#fff 0 75%,transparent 0) 0 0/28px 28px;transform:rotate(calc(var(--sy,0) * 40deg))}
+.repos{margin-top:28px}
+.repos h4{font:500 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-bottom:14px}
+.rgrid{display:grid;gap:10px}
+.repo{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px;display:flex;justify-content:space-between;gap:12px;align-items:center;transition:.25s}
+.repo:hover{transform:translateX(6px);border-color:var(--a)}
+.repo b{display:block;letter-spacing:-.01em}
+.repo small{color:var(--mut);font-size:13px}
+.repo span{font:500 11px var(--mono);color:var(--a);white-space:nowrap}
+
+/* edu */
+.edu{display:grid;gap:14px;margin-top:40px}
+.edu div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.edu b{display:block;font-size:20px;letter-spacing:-.02em}
+.edu small{color:var(--mut)}
+
+/* contact */
+.contact{background:var(--ink);color:var(--bg);border-radius:44px 44px 0 0;margin-top:20px}
+.contact h2{max-width:12ch}
+.contact h2 em{color:var(--b)}
+.contact .eyebrow{color:rgba(239,231,218,.6)}
+.cgrid{display:grid;gap:30px;margin-top:40px}
+.clinks{display:grid;gap:12px;align-content:start}
+.clink{display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:22px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);transition:.3s}
+.clink:hover{background:var(--b);color:var(--ink);transform:translateX(6px)}
+.clink svg{width:26px;height:26px;fill:currentColor;flex:none}
+.clink b{display:block;font-size:17px;letter-spacing:-.01em}
+.clink small{opacity:.65;font-size:13px;word-break:break-all}
+form{display:grid;gap:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:28px;padding:24px}
+label{font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+input,textarea{width:100%;margin-top:7px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.16);border-radius:14px;padding:14px 16px;color:var(--bg);font:inherit;font-size:16px;outline:none;transition:.25s}
+input:focus,textarea:focus{border-color:var(--b);background:rgba(255,255,255,.1)}
+textarea{min-height:130px;resize:vertical}
+form .btn{background:var(--b);color:var(--ink);border-color:var(--b);justify-content:center}
+form .btn:hover{background:var(--bg);border-color:var(--bg)}
+.note{font-size:13px;opacity:.6}
+footer{padding:36px 0 30px;font:500 12px var(--mono);opacity:.6;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+
+.more{margin-top:44px;padding-top:30px;border-top:1px solid rgba(255,255,255,.14);display:grid;gap:26px}
+.more h4{font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.6;margin-bottom:12px}
+.ghost{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border-radius:99px;border:1.5px solid rgba(239,231,218,.35);color:var(--bg);font-weight:600;font-size:14px;transition:.25s;background:transparent}
+.ghost:hover{border-color:var(--b);color:var(--b);transform:translateY(-2px)}
+.ghosts{display:flex;flex-wrap:wrap;gap:8px}
+.ghost.lg{padding:14px 22px;font-size:15px}
+
+
+.beyond{display:grid;gap:16px;margin-top:40px}
+.bcard{border-radius:30px;padding:30px;background:var(--card);border:1px solid var(--line);position:relative;overflow:hidden}
+.bcard h3{font-size:clamp(26px,4vw,38px);letter-spacing:-.03em;line-height:1.05;margin:10px 0 12px}
+.bcard p{color:var(--mut);max-width:44ch;margin-bottom:18px}
+.bigstat{font-size:clamp(64px,13vw,110px);font-weight:800;letter-spacing:-.05em;line-height:.9;color:var(--a)}
+.bigstat small{font-size:.28em;letter-spacing:0;color:var(--mut);margin-left:6px;font-weight:600}
+.bcard.game{background:#0d0f1a;color:#eef;border:0}
+.bcard.game p{color:#aab}
+.bcard.game .bigstat{color:#ffd23f;font-size:clamp(40px,8vw,64px)}
+.bcard .btn{padding:11px 18px;font-size:14px}
+.bcard.game .btn{border-color:#ffd23f;color:#ffd23f}
+.bcard.game .btn.fill{background:#ffd23f;color:#0d0f1a}
+.reel{margin-top:18px;border-radius:20px;overflow:hidden;display:none;background:#000}
+.reel.on{display:block}
+.reel iframe{width:100%;height:560px;border:0;display:block}
+.cube{position:absolute;right:22px;top:22px;width:54px;height:54px;display:grid;grid-template-columns:repeat(3,1fr);gap:3px;transform:rotate(calc(var(--sy,0) * 90deg))}
+.cube i{border-radius:4px;background:var(--k)}
+@media(min-width:820px){.beyond{grid-template-columns:1fr 1fr}}
+
+.ar{display:grid;gap:22px;align-items:center}
+.ar .hiro{height:auto;aspect-ratio:1;width:min(200px,60%);border-radius:18px;border:6px solid #fff;box-shadow:0 14px 36px rgba(0,0,0,.35);justify-self:center;transform:rotate(calc(var(--sy,0) * -12deg))}
+.ar ol{padding-left:20px;display:grid;gap:7px;margin:0 0 20px;opacity:.9}
+.ar ol li::marker{color:var(--b);font-weight:700}
+@media(min-width:820px){.ar{grid-template-columns:1fr 240px;gap:40px}.proj .span2{grid-column:span 2}}
+/* bottom app tab bar */
+.tabbar{position:fixed;left:50%;bottom:calc(12px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:60;display:flex;gap:2px;padding:7px;border-radius:99px;background:rgba(27,26,31,.92);backdrop-filter:blur(16px);box-shadow:0 14px 40px rgba(27,26,31,.35);width:min(92vw,440px);justify-content:space-between}
+.tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 4px;border-radius:99px;color:rgba(239,231,218,.6);font:600 10.5px var(--sans);transition:.3s}
+.tabbar svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tabbar a.on{background:var(--b);color:var(--ink)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(40px) scale(.98);transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1);transition-delay:calc(var(--i,0) * 90ms)}
+.rv.in{opacity:1;transform:none}
+.words span{display:inline-block;opacity:.15;transition:opacity .4s}
+.words span.lit{opacity:1}
+
+@media(min-width:820px){
+  body{padding-bottom:0}
+  .dnav{display:flex}
+  .tabbar{display:none}
+  .hero .wrap{grid-template-columns:1.15fr .85fr}
+  .scrollcue{display:block}
+  .about-grid{grid-template-columns:1.1fr .9fr;gap:60px;align-items:start}
+  .skills{grid-template-columns:repeat(2,1fr)}
+  .proj{grid-template-columns:1fr 1fr}
+  .rgrid{grid-template-columns:repeat(2,1fr)}
+  .edu{grid-template-columns:repeat(2,1fr)}
+  .cgrid{grid-template-columns:.9fr 1.1fr;gap:50px}
+  section{padding:120px 0}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none}.hero h1 span b{transform:none}.words span{opacity:1}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="top" id="top">
+  <a class="brand" href="#home"><i>B</i> Bala Santhosh</a>
+  <nav class="dnav">
+    <a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#work">Work</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="wrap">
+    <div>
+      <div class="hello"><i class="dot"></i> Open to new work · Coimbatore, India</div>
+      <h1><span><b>Bala</b></span><span><b>Santhosh</b></span></h1>
+      <p class="role">I turn messy operations into <strong id="typed">automated systems</strong>.</p>
+      <div class="cta">
+        <a class="btn fill" href="#contact">Let’s talk
+          <svg viewBox="0 0 24 24"><path d="M5 12h12.2l-4.6-4.6L14 6l7 7-7 7-1.4-1.4 4.6-4.6H5z"/></svg></a>
+        <a class="btn" href="https://www.linkedin.com/in/bala-santhoshb" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.6h.05c.53-1 1.84-2.05 3.8-2.05 4.06 0 4.8 2.67 4.8 6.14V21h-4v-4.9c0-1.17-.02-2.67-1.63-2.67-1.63 0-1.88 1.27-1.88 2.58V21h-4z"/></svg>LinkedIn</a>
+        <a class="btn" href="https://www.instagram.com/unstopablethinker" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3zm5 3.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9zm0 2a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM17.5 6a1 1 0 110 2 1 1 0 010-2z"/></svg>Instagram</a>
+      </div>
+    </div>
+    <div class="stage" id="stage">
+      <div class="ring"></div>
+      <div class="arch"></div>
+      <img class="me" src="assets/bala.webp" alt="Portrait of Bala Santhosh" width="608" height="868" fetchpriority="high">
+      <div class="chip c1">⚙ Apps Script</div>
+      <div class="chip c2">🐍 Python</div>
+      <div class="chip c3">🛍 Shopify</div>
+    </div>
+  </div>
+  <div class="scrollcue">SCROLL ↓</div>
+</section>
+
+<div class="marq" aria-hidden="true"><div id="marq">
+  <span>Google Sheets</span><span>Apps Script</span><span>Python</span><span>Shopify</span><span>ERP</span><span>POS</span><span>Automation</span><span>Reporting</span><span>Creative Code</span><span>Google Sheets</span><span>Apps Script</span><span>Python</span><span>Shopify</span><span>ERP</span>
+</div></div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div>
+      <div class="eyebrow rv">01 — About</div>
+      <h2 class="rv">Systems that <em>run themselves.</em></h2>
+      <div style="height:26px"></div>
+      <p class="rv words" id="words">Operations and reporting professional with 5 years running POS settlement, sales reporting, procurement and order workflows across five branches, a warehouse and Shopify.</p>
+      <p class="rv">I love building things from nothing and making machines do the repeat work. Curious across fields, I move between technical and business problems and get restless with routine. Under the name <b>UnstopableThinkerr</b> I put it all in public: tools, videos, drawings and games.</p>
+      <ul class="tags rv" style="margin-top:20px">
+        <li>Building from scratch</li><li>Automation</li><li>Visual storytelling</li><li>Teaching &amp; explaining</li><li>Entrepreneurship</li><li>Craft &amp; nostalgia</li><li>Speedcubing</li>
+      </ul>
+    </div>
+    <div class="stats">
+      <div class="stat rv" style="--i:0"><b data-n="5">0</b><small>years in operations</small></div>
+      <div class="stat rv" style="--i:1"><b data-n="5">0</b><small>branches + warehouse synced daily</small></div>
+      <div class="stat rv" style="--i:2"><b data-n="3">0</b><small>platforms: ERP, Shopify, marketplaces</small></div>
+      <div class="stat rv" style="--i:3"><b data-n="2">0</b><small>languages: Tamil, English</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEYOND -->
+<section id="beyond" style="padding-bottom:20px">
+  <div class="wrap">
+    <div class="eyebrow rv">Beyond work</div>
+    <h2 class="rv">Fast hands, <em>fun builds.</em></h2>
+    <div class="beyond">
+      <div class="bcard rv">
+        <div class="cube" aria-hidden="true"><i style="--k:#d96a4a;border:1px solid rgba(0,0,0,.15)"></i><i style="--k:#f2b134;border:1px solid rgba(0,0,0,.15)"></i><i style="--k:#fff;border:1px solid rgba(0,0,0,.15)"></i><i style="--k:#3b4cc0;border:1px solid rgba(0,0,0,.15)"></i><i style="--k:#2fb560;border:1px solid rgba(0,0,0,.15)"></i><i style="--k:#d96a4a;border:1px solid rgba(0,0,0,.15)"></i><i style="--k:#fff;border:1px solid rgba(0,0,0,.15)"></i><i style="--k:#f2b134;border:1px solid rgba(0,0,0,.15)"></i><i style="--k:#3b4cc0;border:1px solid rgba(0,0,0,.15)"></i></div>
+        <div class="when">SPEEDCUBING · CFOP METHOD</div>
+        <h3>Personal best solve</h3>
+        <div class="bigstat" data-t="16.52">16.52<small>sec</small></div>
+        <p style="margin-top:16px">My best CFOP solve time, caught on camera.</p>
+        <div class="cta">
+          <button class="btn fill" id="reelbtn" type="button">▶ Watch the solve</button>
+          <a class="btn" href="https://www.instagram.com/reel/DR2OvXFkqJx/" target="_blank" rel="noopener">Open on Instagram ↗</a>
+        </div>
+        <div class="reel" id="reel"></div>
+      </div>
+      <div class="bcard game rv" style="--i:1">
+        <div class="when" style="color:#aab">LATEST GAME · BUILT WITH CLAUDE</div>
+        <h3>Velocity ∞</h3>
+        <div class="bigstat">3D HIGHWAY RACER</div>
+        <p style="margin-top:16px">An arcade endless racer: weave through traffic, drift, boost with nitro and chain near-misses into combos. Play Time Attack or Endless.</p>
+        <ul class="tags" style="margin-bottom:20px"><li style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)">3D</li><li style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)">Browser game</li><li style="background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2)">Keyboard</li></ul>
+        <a class="btn fill" href="https://unstopablethinkerr.github.io/trial/" target="_blank" rel="noopener">Play now ↗</a>
+      </div>
+
+      <div class="bcard game rv" style="--i:2">
+        <div class="when" style="color:#aab">BROWSER MAGIC · MIND READER</div>
+        <h3>Stone Magic</h3>
+        <p>Think of a number from 1 to 16, answer Left or Right as the orbs shuffle, and it reads your mind and names your number.</p>
+        <div class="cta">
+          <a class="btn fill" href="https://unstopablethinkerr.github.io/stone-magic/" target="_blank" rel="noopener">Try it ↗</a>
+          <a class="btn" href="https://www.instagram.com/p/DfnH65lS6Qa/" target="_blank" rel="noopener">▶ Watch the video</a>
+        </div>
+      </div>
+      <div class="bcard rv" style="--i:3">
+        <div class="when">COLLECTION · MINI GAMES</div>
+        <h3>GameGrid</h3>
+        <p>A showcase of my mini games in one place.</p>
+        <a class="btn fill" href="https://unstopablethinkerr.github.io/gamegrid/" target="_blank" rel="noopener">Open GameGrid ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="wrap">
+    <div class="eyebrow rv">02 — Toolbox</div>
+    <h2 class="rv">What I <em>work with.</em></h2>
+    <div class="skills">
+      <div class="skill rv" style="--k:var(--a);--i:0"><h3>Reporting &amp; Data</h3><ul class="tags"><li>Google Sheets</li><li>Microsoft Excel</li><li>Bulk XLSX / CSV</li><li>Sales templates</li><li>Data workflows</li></ul></div>
+      <div class="skill rv" style="--k:var(--c);--i:1"><h3>Automation</h3><ul class="tags"><li>Google Apps Script</li><li>Python</li><li>Pillow</li><li>JavaScript</li><li>Excel macros</li></ul></div>
+      <div class="skill rv" style="--k:var(--d);--i:2"><h3>ERP &amp; Operations</h3><ul class="tags"><li>Ginesys ERP</li><li>POS operations</li><li>Inventory</li><li>Procurement (PO / GRC)</li></ul></div>
+      <div class="skill rv" style="--k:var(--b);--i:3"><h3>E-commerce &amp; Tools</h3><ul class="tags"><li>Shopify</li><li>Amazon</li><li>Flipkart</li><li>Google Workspace</li><li>AnyDesk</li><li>ChatGPT · Claude · Gemini</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="work">
+  <div class="wrap">
+    <div class="eyebrow rv">03 — Experience</div>
+    <h2 class="rv">Where I’ve <em>been.</em></h2>
+    <div class="tl" id="tl">
+      <div class="fill" id="tlfill"></div>
+      <article class="job">
+        <div class="when">2022 — OCT 2026</div>
+        <h3>ERP &amp; Shopify Operations</h3>
+        <div class="org">Nesavu Textiles India Pvt Ltd (The Nesavu) · Coimbatore</div>
+        <ul>
+          <li>Built daily, monthly and yearly sales reporting templates in Google Sheets, used across departments.</li>
+          <li>Designed data workflows connecting Shopify, the ERP and reporting sheets.</li>
+          <li>Coordinated daily with 5 branches and the warehouse to keep POS, sales and stock data current.</li>
+          <li>Ran daily POS settlement, billing and end-of-day sales closing reports.</li>
+          <li>Built an Excel macro billing automation that saves each bill to a database and prints the invoice and delivery challan instantly for online orders.</li>
+          <li>Worked in procurement: purchase orders, GRC processing, item SKU creation and mapping.</li>
+          <li>Rolled out POS updates remotely via AnyDesk across branches, and communicated bill layout changes to managers.</li>
+        </ul>
+      </article>
+      <article class="job">
+        <div class="when">MAY 2021 — JAN 2022</div>
+        <h3>E-commerce Operations</h3>
+        <div class="org">Mr. SHOT (Yes We Associates) · Coimbatore</div>
+        <ul>
+          <li>Processed Amazon and Flipkart orders end to end, from intake to dispatch.</li>
+          <li>Tracked orders, sales and inventory daily in Excel.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="wrap">
+    <div class="eyebrow rv">04 — Projects</div>
+    <h2 class="rv">Things I’ve <em>built.</em></h2>
+    <div class="proj">
+      <div class="pcard span2 rv">
+        <div class="num">FEATURED · AUGMENTED REALITY</div>
+        <div class="ar">
+          <div>
+            <h3>AR Object Viewer</h3>
+            <p>Bring 3D objects into your room through the phone camera, in real time. Pick from about 25 models, including Iron Man, a bee, a windmill, the solar system and a few cars, then scale and rotate them.</p>
+            <ol>
+              <li>Open the Hiro marker on a phone or print it, and keep it flat on a table.</li>
+              <li>Open the AR viewer and allow camera access.</li>
+              <li>Point the camera at the marker and choose an object.</li>
+            </ol>
+            <ul class="tags"><li>AR</li><li>WebAR</li><li>3D models</li><li>Camera</li></ul>
+            <div class="links">
+              <a class="btn fill" href="https://unstopablethinkerr.github.io/AR/" target="_blank" rel="noopener">Open AR viewer ↗</a>
+              <a class="btn" href="assets/hiro.png" target="_blank" rel="noopener">Hiro marker ↗</a>
+            </div>
+          </div>
+          <img class="hiro" src="assets/hiro.png" alt="Hiro AR marker" width="512" height="512" loading="lazy">
+        </div>
+      </div>
+      <div class="pcard rv" style="--i:1">
+        <div class="num">LIVE DATA · API SETUP</div>
+        <h3>World Travel Dashboard</h3>
+        <p>Search any country for its flag, capital, population, currency and languages, plus the live weather in its capital. Opens with your own country when it can detect it.</p>
+        <ul class="tags"><li>JavaScript</li><li>REST APIs</li><li>Cloudflare Worker</li><li>Open-Meteo</li></ul>
+        <div class="links">
+          <a class="btn fill" href="https://unstopablethinkerr.github.io/world/" target="_blank" rel="noopener">Live demo ↗</a>
+          <a class="btn" href="https://github.com/unstopablethinkerr/world" target="_blank" rel="noopener">Source ↗</a>
+        </div>
+      </div>
+      <div class="pcard light rv" style="--i:1">
+        <div class="num">TOOL / 02 · 2026</div>
+        <h3>Shopify Image Compression</h3>
+        <p>Batch tool that compresses product images from input to output folders and skips oversized files.</p>
+        <ul class="tags"><li>Python</li><li>Pillow</li></ul>
+      </div>
+      <div class="pcard light rv" style="--i:2">
+        <div class="num">AUTOMATION / 03</div>
+        <h3>Macro Billing System</h3>
+        <p>Excel macro that logs each online-order bill to a database and prints invoice + DC instantly.</p>
+        <ul class="tags"><li>Excel</li><li>VBA macro</li></ul>
+      </div>
+    </div>
+    <div class="repos rv">
+      <h4>Latest from GitHub</h4>
+      <div class="rgrid" id="repos"><div class="repo"><b>Loading repositories…</b></div></div>
+      <div class="cta" style="margin-top:18px"><a class="btn" href="https://github.com/unstopablethinkerr" target="_blank" rel="noopener">All repositories ↗</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow rv">05 — Education</div>
+    <h2 class="rv">B.E. in <em>ECE.</em></h2>
+    <div class="edu">
+      <div class="rv"><b>KGiSL Institute of Technology</b><small>B.E. Electronics &amp; Communication · 2023 – 2025 · Coimbatore</small></div>
+      <div class="rv" style="--i:1"><b>Jansons Institute of Technology</b><small>Electronics &amp; Communication · 2019 – 2021 · Coimbatore</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="eyebrow rv">06 — Contact</div>
+    <h2 class="rv">Let’s build <em>something.</em></h2>
+    <div class="cgrid">
+      <div class="clinks">
+        <a class="clink rv" href="mailto:balasanthoshb@gmail.com">
+          <svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1zm9 7.2L4.4 7H4v.5l8 5.5 8-5.5V7h-.4z"/></svg>
+          <span><b>Email</b><small>balasanthoshb@gmail.com</small></span></a>
+        <a class="clink rv" style="--i:1" href="https://wa.me/917904669252" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.1-1.3A10 10 0 1012 2zm5.2 13.9c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.8-.1 1.4z"/></svg>
+          <span><b>WhatsApp</b><small>+91 79046 69252</small></span></a>
+        <a class="clink rv" style="--i:2" href="https://www.linkedin.com/in/bala-santhoshb" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9.75h4V21H3zM9.5 9.75h3.8v1.6h.05c.53-1 1.84-2.05 3.8-2.05 4.06 0 4.8 2.67 4.8 6.14V21h-4v-4.9c0-1.17-.02-2.67-1.63-2.67-1.63 0-1.88 1.27-1.88 2.58V21h-4z"/></svg>
+          <span><b>LinkedIn</b><small>in/bala-santhoshb</small></span></a>
+        <a class="clink rv" style="--i:3" href="https://www.instagram.com/unstopablethinker" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm0 2a3 3 0 00-3 3v10a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3zm5 3.5a4.5 4.5 0 110 9 4.5 4.5 0 010-9zm0 2a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM17.5 6a1 1 0 110 2 1 1 0 010-2z"/></svg>
+          <span><b>Instagram</b><small>@unstopablethinker</small></span></a>
+        <a class="clink rv" style="--i:4" href="https://github.com/unstopablethinkerr" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M12 .5a11.5 11.5 0 00-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.76 1.19 1.76 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 015.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.4-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0012 .5z"/></svg>
+          <span><b>GitHub</b><small>@unstopablethinkerr</small></span></a>
+      </div>
+      <form class="rv" id="cf">
+        <div><label for="n">Your name</label><input id="n" required autocomplete="name"></div>
+        <div><label for="e">Your email</label><input id="e" type="email" required autocomplete="email"></div>
+        <div><label for="m">Message</label><textarea id="m" required></textarea></div>
+        <button class="btn" type="submit">Send message →</button>
+        <p class="note">Opens your email app with the message ready to send.</p>
+      </form>
+    </div>
+
+    <div class="more">
+      <div><h4>Freelancing</h4><div class="ghosts"><a class="ghost lg" href="https://glirabharat.com" target="_blank" rel="noopener">Hire me for freelance work · glirabharat.com ↗</a></div></div>
+      <div><h4>YouTube · 2 channels</h4><div class="ghosts">
+        <a class="ghost" href="https://youtube.com/@unstopablethinker" target="_blank" rel="noopener">▶ @unstopablethinker</a>
+        <a class="ghost" href="https://youtube.com/@balasanthoshb8291" target="_blank" rel="noopener">▶ @balasanthoshb8291</a></div></div>
+      <div><h4>Also find me on</h4><div class="ghosts">
+        <a class="ghost" href="https://x.com/balasanthosh_" target="_blank" rel="noopener">X @balasanthosh_</a>
+        <a class="ghost" href="https://www.reddit.com/user/unstopablethinker/" target="_blank" rel="noopener">Reddit u/unstopablethinker</a>
+        <a class="ghost" href="https://rumble.com/user/unstopablethinker" target="_blank" rel="noopener">Rumble @unstopablethinker</a></div></div>
+      <div><h4>Instagram accounts</h4><div class="ghosts">
+        <a class="ghost" href="https://www.instagram.com/unstopablethinker" target="_blank" rel="noopener">@unstopablethinker</a>
+        <a class="ghost" href="https://www.instagram.com/follow.the.gut" target="_blank" rel="noopener">@follow.the.gut</a>
+        <a class="ghost" href="https://www.instagram.com/glirabharat" target="_blank" rel="noopener">@glirabharat</a>
+        <a class="ghost" href="https://www.instagram.com/the_microprocessor" target="_blank" rel="noopener">@the_microprocessor</a>
+        <a class="ghost" href="https://www.instagram.com/cubictricks" target="_blank" rel="noopener">@cubictricks</a>
+      </div></div>
+    </div>
+    <footer><span>© 2026 Bala Santhosh · UnstopableThinkerr</span><span>Coimbatore, Tamil Nadu</span></footer>
+  </div>
+</section>
+</main>
+
+<!-- app-style bottom tabs -->
+<nav class="tabbar" aria-label="Sections">
+  <a href="#home" data-s="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg>Home</a>
+  <a href="#about" data-s="about"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>About</a>
+  <a href="#work" data-s="work"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2"/></svg>Work</a>
+  <a href="#projects" data-s="projects"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg>Projects</a>
+  <a href="#contact" data-s="contact"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg>Contact</a>
+</nav>
+
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* word-by-word scroll highlight */
+const w=$('#words'); w.innerHTML=w.textContent.split(' ').map(t=>`<span>${t}</span>`).join(' ');
+const wspans=$$('#words span');
+
+/* reveal on scroll */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting) return;
+  e.target.classList.add('in'); io.unobserve(e.target);
+  e.target.querySelectorAll?.('[data-n]').forEach(count);
+}),{threshold:.18});
+$$('.rv,.job').forEach(el=>io.observe(el));
+
+/* counters */
+function count(el){
+  const n=+el.dataset.n; if(reduce){el.textContent=n;return}
+  let t0; const step=t=>{t0??=t; const p=Math.min((t-t0)/1100,1);
+    el.textContent=Math.round(n*(1-Math.pow(1-p,3))); if(p<1) requestAnimationFrame(step)}
+  requestAnimationFrame(step);
+}
+$$('.stat').forEach(s=>{const b=s.querySelector('[data-n]'); new IntersectionObserver((e,o)=>{if(e[0].isIntersecting){count(b);o.disconnect()}},{threshold:.5}).observe(s)});
+
+/* typed role rotation */
+const roles=['automated systems','clean dashboards','one-click workflows','creative web toys'];
+let ri=0; const typed=$('#typed');
+if(!reduce) setInterval(()=>{ri=(ri+1)%roles.length;typed.style.opacity=0;setTimeout(()=>{typed.textContent=roles[ri];typed.style.opacity=1},250)},2800);
+typed.style.transition='opacity .25s';
+
+/* scroll-linked motion */
+const prog=$('#progress'), top=$('#top'), stage=$('#stage'), marq=$('#marq'), tl=$('#tl'), fill=$('#tlfill');
+let tick=false;
+function onScroll(){
+  const y=scrollY, h=document.documentElement.scrollHeight-innerHeight;
+  prog.style.transform=`scaleX(${h?y/h:0})`;
+  top.classList.toggle('scrolled',y>20);
+  if(!reduce){
+    const p=Math.min(y/innerHeight,1);
+    stage.style.setProperty('--sy',p.toFixed(3));
+    marq.style.setProperty('--sp',(y*.35).toFixed(0));
+    document.querySelectorAll('.qr,.cube,.hiro').forEach(q=>q.style.setProperty('--sy',(y/900).toFixed(3)));
+  }
+  /* timeline line draws as you scroll */
+  const r=tl.getBoundingClientRect(), prog2=Math.min(Math.max((innerHeight*.6-r.top)/r.height,0),1);
+  fill.style.height=`calc((100% - 12px) * ${prog2})`;
+  /* word highlight */
+  const wr=w.getBoundingClientRect(), wp=Math.min(Math.max((innerHeight*.9-wr.top)/(innerHeight*.5),0),1);
+  const lit=Math.round(wp*wspans.length); wspans.forEach((s,i)=>s.classList.toggle('lit',i<lit));
+  tick=false;
+}
+addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(onScroll)}},{passive:true});
+onScroll();
+
+/* scroll spy */
+const ids=['home','about','skills','work','projects','contact'];
+const links=$$('.dnav a,.tabbar a');
+const spy=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting) return; const id=e.target.id;
+  links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+id));
+}),{rootMargin:'-45% 0px -50% 0px'});
+ids.forEach(i=>spy.observe(document.getElementById(i)));
+
+/* GitHub repos */
+fetch('https://api.github.com/users/unstopablethinkerr/repos?sort=updated&per_page=6')
+ .then(r=>r.ok?r.json():Promise.reject()).then(list=>{
+  const rs=list.filter(r=>!r.fork&&r.name!=='bio'&&!/qr-air-gap/i.test(r.name)).slice(0,6);
+  $('#repos').innerHTML=rs.map(r=>`<a class="repo" href="${r.html_url}" target="_blank" rel="noopener"><div><b>${r.name}</b><small>${(r.description||'Experiment').replace(/</g,'&lt;')}</small></div><span>${r.language||'↗'}</span></a>`).join('')||'<div class="repo"><b>No public repos yet</b></div>';
+ }).catch(()=>{$('#repos').innerHTML='<a class="repo" href="https://github.com/unstopablethinkerr" target="_blank" rel="noopener"><div><b>Browse the full archive on GitHub</b><small>Games, tools and experiments</small></div><span>↗</span></a>'});
+
+
+/* click-to-load reel embed */
+$('#reelbtn').addEventListener('click',()=>{
+  const r=$('#reel'); if(!r.firstChild) r.innerHTML='<iframe src="https://www.instagram.com/reel/DR2OvXFkqJx/embed" loading="lazy" allowfullscreen title="CFOP solve reel"></iframe>';
+  r.classList.toggle('on');
+});
+
+/* contact form -> mailto */
+$('#cf').addEventListener('submit',e=>{
+  e.preventDefault();
+  const n=$('#n').value,em=$('#e').value,m=$('#m').value;
+  location.href='mailto:balasanthoshb@gmail.com?subject='+encodeURIComponent('Hello from '+n+' (via your site)')+'&body='+encodeURIComponent(m+'\n\n— '+n+'\n'+em);
+});
+})();
+</script>
+</body>
+</html>
